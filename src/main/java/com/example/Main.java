@@ -14,20 +14,23 @@ public class Main {
 
         Scanner scanner = new Scanner(System.in);
         System.out.println("Inserisci una stringa: ");
-
-        String stringa = scanner.nextLine();
-        DataOutputStream out = new DataOutputStream(s.getOutputStream());
-        out.writeBytes(stringa + "\n"); 
-
         Scanner input = new Scanner(s.getInputStream());
-        if (input.hasNextLine()) {
-            String risposta = input.nextLine();
-            System.out.println("Risposta del server: " + risposta);
-        }
+        DataOutputStream out = new DataOutputStream(s.getOutputStream());
 
-        scanner.close();
-        input.close();
+        String stringa;
+        do {
+            stringa = scanner.nextLine();
+            out.writeBytes(stringa + "\n");
+
+            if (input.hasNextLine()) {
+                String risposta = input.nextLine();
+                System.out.println("Risposta del server: " + risposta);
+            }
+        } while (!stringa.equals("!"));
+        
         out.close();
+        input.close();
+        scanner.close();
         s.close();
     }
 }
