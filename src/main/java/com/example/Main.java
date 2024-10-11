@@ -1,7 +1,7 @@
 package com.example;
 
+import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Scanner;
@@ -16,8 +16,8 @@ public class Main {
         System.out.println("Inserisci una stringa: ");
 
         String stringa = scanner.nextLine();
-        PrintWriter out = new PrintWriter(s.getOutputStream(), true);
-        out.println(stringa); 
+        DataOutputStream out = new DataOutputStream(s.getOutputStream());
+        out.writeBytes(stringa + "\n"); 
 
         Scanner input = new Scanner(s.getInputStream());
         if (input.hasNextLine()) {
