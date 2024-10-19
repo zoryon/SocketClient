@@ -27,30 +27,20 @@ public class Main {
             switch (choice) {
                 case 0:
                     System.out.println("Connessione chiusa.");
+                    keyboard.close();
                     s.close();
                     break;
                 case 1:
-                    sendReq(out, keyboard);
-                    break;
                 case 2:
-                    sendReq(out, keyboard);
-                    break;
                 case 3:
-                    sendReq(out, keyboard);
-                    break;
                 case 4:
                     sendReq(out, keyboard);
                     break;
                 default:
             }
             
-            if (!s.isClosed()) {
-                showRes(in);
-            }
+            if (!s.isClosed()) showRes(in);
         } while (choice != 0);
-
-        keyboard.close();
-        s.close();
     }
 
     public static void menu() {
@@ -60,19 +50,23 @@ public class Main {
         System.out.println("3) Ribaltare i caratteri della stringa");
         System.out.println("4) Contare il numero di caratteri");
         System.out.println("0) Esci");
+        System.out.print(": ");
+    }
+
+    public static String newLine() {
+        return "\n";
     }
 
     public static String sanitize(BufferedReader in, DataOutputStream out, Scanner keyboard) throws IOException {
-        String tmp;
+        String ans;
         boolean validChoice;
         do {
-            System.out.print(": ");
-            tmp = keyboard.nextLine();
-            out.writeBytes(tmp + "\n");
+            ans = keyboard.nextLine();
+            out.writeBytes(ans + newLine());
 
             String serverResponse = in.readLine();
 
-            if (serverResponse.equals(ResponseMessages.getInvalidChoice())) {
+            if (serverResponse.equals(ResponseMessages.getINVALID_CHOICE())) {
                 System.out.println(serverResponse);
                 validChoice = false;
             } else {
@@ -80,12 +74,12 @@ public class Main {
             }
         } while (!validChoice);
 
-        return tmp;
+        return ans;
     }
 
     public static void sendReq(DataOutputStream out, Scanner keyboard) throws IOException {
         System.out.println("Inserisci la stringa da modificare: ");
-        out.writeBytes(keyboard.nextLine() + "\n");
+        out.writeBytes(keyboard.nextLine() + newLine());
     }
 
     public static String catchRes(BufferedReader in) throws IOException {
